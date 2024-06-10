@@ -3,55 +3,6 @@ import './App.css';
 import { useState } from "react";
 // 你将从 useState 中获得两样东西：当前的 state（count），以及用于更新它的函数（setCount）。你可以给它们起任何名字，但按照惯例会像 [something, setSomething] 这样为它们命名。
 
-
-
-function App() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
-  const xIsNext = currentMove % 2 === 0;
-  const currentSquares = history[currentMove];
-
-  function handlePlay(nextSquares) {
-    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-    setHistory(nextHistory);
-    setCurrentMove(nextHistory.length - 1);
-  }
-
-  function jumpTo(nextMove) {
-    setCurrentMove(nextMove);
-  }
-
-  const moves = history.map((_step, move) => {
-    let description;
-    if (move > 0) {
-      description = 'Go to move #' + move;
-    } else {
-      description = 'Go to game start';
-    }
-
-    return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
-      </li>
-    )
-  })
-
-  return (
-    <>
-      <div className='game'>
-        <div className='game-board'>
-          <Board xIsNext={xIsNext} squars={currentSquares} onPlay={handlePlay} />
-        </div>
-        <div className='game-info'>
-          <ol>{moves}</ol>
-        </div>
-      </div>
-    </>
-  );
-
-
-
-}
 function Board({ xIsNext, squars, onPlay }) {
   function handleClick(i) {
     if (calcuateWinner(squars) || squars[i]) {
@@ -102,6 +53,56 @@ function Squares({ value, onSquareClick }) {
     <button className='square' onClick={onSquareClick}>{value}</button>
   )
 }
+
+
+function App() {
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[currentMove];
+
+  function handlePlay(nextSquares) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
+  }
+
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+  }
+
+  const moves = history.map((_step, move) => {
+    let description;
+    if (move > 0) {
+      description = 'Go to move #' + move;
+    } else {
+      description = 'Go to game start';
+    }
+
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    )
+  })
+
+  return (
+    <>
+      <div className='game'>
+        <div className='game-board'>
+          <Board xIsNext={xIsNext} squars={currentSquares} onPlay={handlePlay} />
+        </div>
+        <div className='game-info'>
+          <ol>{moves}</ol>
+        </div>
+      </div>
+    </>
+  );
+
+
+
+}
+
 
 function calcuateWinner(squares) {
   const lines = [
