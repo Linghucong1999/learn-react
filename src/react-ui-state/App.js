@@ -22,7 +22,9 @@ export default function App() {
                 by {sculpture.artist}
             </h2>
             <h3> ({index + 1} of {sculptureList.length})</h3>
-            <button onClick={handleMoreClick}>{showMore ? "隐藏" : "显示更多"}</button>
+            <div>
+                <button onClick={handleMoreClick}>{showMore ? "隐藏" : "显示更多"}</button>
+            </div>
             {showMore && <p>{sculpture.description}</p>}
             <img src={sculpture.url} alt='...' />
         </>
